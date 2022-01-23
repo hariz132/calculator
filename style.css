@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 500px;
+  border: 1px solid black;
+  border-radius: 50px;
+  background-color: lightgrey;
+}
+
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  height: 120px;
+  margin: 50px;
+  padding: 16px;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: lightskyblue;
+  font-size: 50px;
+}
+
+.buttons {
+  font-size: 32px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 50px;
+}
+
+.row div {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
