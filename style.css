@@ -37,7 +37,7 @@ body {
   margin: 30px 50px;
 }
 
-.row div {
+.row button {
   border: 1px solid black;
   border-radius: 5px;
   width: 80px;
