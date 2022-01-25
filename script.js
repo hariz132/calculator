@@ -7,11 +7,12 @@ let a = ''; // a is the result of the previous operation
 let b = '';
 let operator;
 let inputValue = '';
+let maxDisplayChar = 10;
 
 for (const button of digitButtons) {
   button.addEventListener('click', e => {
     inputValue += e.target.textContent;
-    updateDisplay(inputValue);
+    updateDisplay(+inputValue);
   });
 }
 
@@ -38,8 +39,43 @@ equalButton.addEventListener('click', () => {
   inputValue = '';
 });
 
-function updateDisplay(str) {
-  display.textContent = str;
+function updateDisplay(num) {
+  if (numLength(num) > maxDisplayChar) {
+    if (isExpForm(num)) {
+      // round the significand so the resulting exponential is maxDisplayChar length (excluding the decimal place)
+      const array = String(num).split('e');
+      array[0] = roundoff(+array[0], maxDisplayChar - array[1].length - 2);
+      display.textContent = array.join('e');
+    } else {
+      // check if decimal place is within maxDisplayChar limit
+      if (String(num).includes('.') && String(num).indexOf('.') <= maxDisplayChar) {
+        display.textContent = roundoff(num, maxDisplayChar - String(num).indexOf('.'));
+      } else {
+        updateDisplay(num.toExponential());
+      }
+    }
+  } else {
+    display.textContent = num;
+  }
+}
+
+// rounds num to the specified decimal places
+function roundoff(num, decimalPlaces) {
+  return +(Math.round(num + `e+${decimalPlaces}`) + `e-${decimalPlaces}`); 
+  // doesn't work when (num + `e+${decimalPlaces}`) doesn't evaluate to a decimal form ??
+}
+
+// length of a number (excluding the decimal place). If num is in exp form, it also counts the exp parts
+function numLength(num) { 
+  return String(num).replace('.', '').length;
+}
+
+function isExpForm(num) {
+  return String(num).includes('e');
+}
+
+function decimalPlaces(num) {
+  return String(num).includes('.') ? String(num).split('.')[1].length : 0;
 }
 
 function operate(operator, a, b) {
