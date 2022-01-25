@@ -32,12 +32,18 @@ for (const button of operatorButtons) {
 }
 
 equalButton.addEventListener('click', () => {
-  if (inputValue) {
-    b = inputValue;
+  if (a) {
+    if (inputValue) {
+      b = inputValue;
+      a = operate(operator, +a, +b);
+      updateDisplay(a);
+      inputValue = '';
+    } else if (b) {
+      a = operate(operator, +a, +b);
+      updateDisplay(a);
+      inputValue = '';
+    }
   }
-  a = operate(operator, +a, +b);
-  updateDisplay(a);
-  inputValue = '';
 });
 
 clearButton.addEventListener('click', () => {
