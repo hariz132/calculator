@@ -3,6 +3,7 @@ const buttons = document.querySelectorAll('.buttons button');
 const digitButtons = document.querySelectorAll('.buttons .digit');
 const operatorButtons = document.querySelectorAll('.buttons .operator');
 const equalButton = document.querySelector('#equal');
+const clearButton = document.querySelector('#clear');
 let a = ''; // a is the result of the previous operation
 let b = '';
 let operator;
@@ -37,6 +38,13 @@ equalButton.addEventListener('click', () => {
   a = operate(operator, +a, +b);
   updateDisplay(a);
   inputValue = '';
+});
+
+clearButton.addEventListener('click', () => {
+  a = '';
+  b = '';
+  inputValue = '';
+  display.textContent = '';
 });
 
 function updateDisplay(num) {
