@@ -3,36 +3,39 @@ const buttons = document.querySelectorAll('.buttons button');
 const digitButtons = document.querySelectorAll('.buttons .digit');
 const operatorButtons = document.querySelectorAll('.buttons .operator');
 const equalButton = document.querySelector('#equal');
-let displayValue = '';
+let a = ''; // a is the result of the previous operation
+let b = '';
 let operator;
-let savedValue;
+let inputValue = '';
 
 for (const button of digitButtons) {
   button.addEventListener('click', e => {
-    displayValue += e.target.textContent;
-    updateDisplay(displayValue);
+    inputValue += e.target.textContent;
+    updateDisplay(inputValue);
   });
 }
 
 for (const button of operatorButtons) {
   button.addEventListener('click', e => {
-    if (savedValue) {
-      displayValue = operate(operator, +savedValue, +displayValue);
-      updateDisplay(displayValue);
+    if (!a) { // the case only for the very first value inputted
+      a = inputValue;
+    } else if (inputValue) {
+      b = inputValue;
+      a = operate(operator, +a, +b);
+      updateDisplay(a);
     }
     operator = e.target.id;
-    savedValue = displayValue;
-    displayValue = '';
+    inputValue = '';
   });
 }
 
-equalButton.addEventListener('click', e => {
-  if (savedValue) {
-    displayValue = operate(operator, +savedValue, +displayValue);
-    updateDisplay(displayValue);
+equalButton.addEventListener('click', () => {
+  if (inputValue) {
+    b = inputValue;
   }
-  savedValue = displayValue;
-  displayValue = '';
+  a = operate(operator, +a, +b);
+  updateDisplay(a);
+  inputValue = '';
 });
 
 function updateDisplay(str) {
