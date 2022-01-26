@@ -4,6 +4,7 @@ const digitButtons = document.querySelectorAll('.buttons .digit');
 const operatorButtons = document.querySelectorAll('.buttons .operator');
 const equalButton = document.querySelector('#equal');
 const clearButton = document.querySelector('#clear');
+const decimalButton = document.querySelector('#decimal');
 let a = null; // a is the result of the previous operation
 let b = null;
 let operator;
@@ -54,6 +55,13 @@ equalButton.addEventListener('click', () => {
       inputValue = '';
       currentMode = 'finalResult'
     }
+  }
+});
+
+decimalButton.addEventListener('click', () => {
+  if (!String(inputValue).includes('.')) {
+    inputValue += '.';
+    updateDisplay(inputValue);
   }
 });
 
