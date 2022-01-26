@@ -1,6 +1,6 @@
 const display = document.querySelector('.display')
 const buttons = document.querySelectorAll('.buttons button');
-const digitButtons = document.querySelectorAll('.buttons .digit');
+const numberButtons = document.querySelectorAll('.buttons .digit');
 const operatorButtons = document.querySelectorAll('.buttons .operator');
 const equalButton = document.querySelector('#equal');
 const clearButton = document.querySelector('#clear');
@@ -13,7 +13,7 @@ let inputValue = '';
 let currentMode;
 let maxDisplayChar = 10;
 
-for (const button of digitButtons) {
+for (const button of numberButtons) {
   button.addEventListener('click', e => {
     inputValue += e.target.textContent;
     updateDisplay(+inputValue);
@@ -81,12 +81,12 @@ clearButton.addEventListener('click', () => {
 function updateDisplay(num) { // can accept either number or string arguments
   if (numLength(num) > maxDisplayChar) {
     if (isExpForm(num)) {
-      // round the significand so the resulting exponential is maxDisplayChar length (excluding the decimal place)
+      // round the significand so the resulting exponential form is maxDisplayChar length (excluding the decimal point)
       const array = String(num).split('e');
       array[0] = roundoff(+array[0], maxDisplayChar - array[1].length - 2);
       display.textContent = array.join('e');
     } else {
-      // check if decimal place is within maxDisplayChar limit
+      // check if decimal point is within maxDisplayChar limit
       if (String(num).includes('.') && String(num).indexOf('.') <= maxDisplayChar) {
         display.textContent = roundoff(num, maxDisplayChar - String(num).indexOf('.'));
       } else {
@@ -100,11 +100,11 @@ function updateDisplay(num) { // can accept either number or string arguments
 
 // rounds num to the specified decimal places
 function roundoff(num, decimalPlaces) {
-  return +(Math.round(num + `e+${decimalPlaces}`) + `e-${decimalPlaces}`); 
-  // doesn't work when (num + `e+${decimalPlaces}`) doesn't evaluate to a decimal form ??
+  return +(Math.round(num + `e+${decimalPlaces}`) + `e-${decimalPlaces}`);
+  // only works for num when represented by JS in decimal form, and not in exponential form
 }
 
-// length of a number (excluding the decimal place). If num is in exp form, it also counts the exp parts
+// length of a number (excluding the decimal point). If num is in exp form, it also counts the exp parts
 function numLength(num) { 
   return String(num).replace('.', '').length;
 }
