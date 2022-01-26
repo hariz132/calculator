@@ -30,16 +30,27 @@ body {
 .row {
   display: flex;
   justify-content: space-between;
-  margin: 30px 50px;
 }
 
 .row button {
   border: 1px solid black;
   border-radius: 5px;
-  width: 80px;
-  height: 80px;
+  height: 98px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
+  padding: 0;
+  flex: 1 1 0px;
+}
+
+#zero {
+  flex: 2 1 4px;
+  /* 4px from:
+      2px border of 1 missing button
+      2px border box basis offset*/
+}
+
+.buttons {
+  margin: 50px;
 }
