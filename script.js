@@ -5,6 +5,7 @@ const operatorButtons = document.querySelectorAll('.buttons .operator');
 const equalButton = document.querySelector('#equal');
 const clearButton = document.querySelector('#clear');
 const decimalButton = document.querySelector('#decimal');
+const backspaceButton = document.querySelector('#backspace');
 let a = null; // a is the result of the previous operation
 let b = null;
 let operator;
@@ -65,6 +66,11 @@ decimalButton.addEventListener('click', () => {
   }
 });
 
+backspaceButton.addEventListener('click', () => {
+  inputValue = inputValue.slice(0, -1);
+  updateDisplay(inputValue);
+});
+
 clearButton.addEventListener('click', () => {
   a = null;
   b = null;
@@ -72,7 +78,7 @@ clearButton.addEventListener('click', () => {
   display.textContent = '';
 });
 
-function updateDisplay(num) {
+function updateDisplay(num) { // can accept either number or string arguments
   if (numLength(num) > maxDisplayChar) {
     if (isExpForm(num)) {
       // round the significand so the resulting exponential is maxDisplayChar length (excluding the decimal place)
@@ -84,7 +90,7 @@ function updateDisplay(num) {
       if (String(num).includes('.') && String(num).indexOf('.') <= maxDisplayChar) {
         display.textContent = roundoff(num, maxDisplayChar - String(num).indexOf('.'));
       } else {
-        updateDisplay(num.toExponential());
+        updateDisplay(Number(num).toExponential());
       }
     }
   } else {
