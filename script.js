@@ -4,8 +4,8 @@ const digitButtons = document.querySelectorAll('.buttons .digit');
 const operatorButtons = document.querySelectorAll('.buttons .operator');
 const equalButton = document.querySelector('#equal');
 const clearButton = document.querySelector('#clear');
-let a = ''; // a is the result of the previous operation
-let b = '';
+let a = null; // a is the result of the previous operation
+let b = null;
 let operator;
 let inputValue = '';
 let maxDisplayChar = 10;
@@ -20,11 +20,11 @@ for (const button of digitButtons) {
 for (const button of operatorButtons) {
   button.addEventListener('click', e => {
     if (inputValue) {
-      if (!a) {
-        a = inputValue;
+      if (a === null) {
+        a = +inputValue;
       } else {
-        b = inputValue;
-        a = operate(operator, +a, +b);
+        b = +inputValue;
+        a = operate(operator, a, b);
         updateDisplay(a);
       }
     }
@@ -34,14 +34,14 @@ for (const button of operatorButtons) {
 }
 
 equalButton.addEventListener('click', () => {
-  if (a) {
+  if (a !== null) {
     if (inputValue) {
-      b = inputValue;
-      a = operate(operator, +a, +b);
+      b = +inputValue;
+      a = operate(operator, a, b);
       updateDisplay(a);
       inputValue = '';
-    } else if (b) {
-      a = operate(operator, +a, +b);
+    } else if (b !== null) {
+      a = operate(operator, a, b);
       updateDisplay(a);
       inputValue = '';
     }
@@ -49,8 +49,8 @@ equalButton.addEventListener('click', () => {
 });
 
 clearButton.addEventListener('click', () => {
-  a = '';
-  b = '';
+  a = null;
+  b = null;
   inputValue = '';
   display.textContent = '';
 });
