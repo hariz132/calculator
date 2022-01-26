@@ -8,12 +8,18 @@ let a = null; // a is the result of the previous operation
 let b = null;
 let operator;
 let inputValue = '';
+let currentMode;
 let maxDisplayChar = 10;
 
 for (const button of digitButtons) {
   button.addEventListener('click', e => {
     inputValue += e.target.textContent;
     updateDisplay(+inputValue);
+    if (currentMode === 'finalResult') { // only when the equal button was last run
+      a = null;
+      b = null;
+    }
+    currentMode = 'calculation';
   });
 }
 
@@ -30,6 +36,7 @@ for (const button of operatorButtons) {
     }
     operator = e.target.id;
     inputValue = '';
+    currentMode = 'calculation';
   });
 }
 
@@ -40,10 +47,12 @@ equalButton.addEventListener('click', () => {
       a = operate(operator, a, b);
       updateDisplay(a);
       inputValue = '';
+      currentMode = 'finalResult'
     } else if (b !== null) {
       a = operate(operator, a, b);
       updateDisplay(a);
       inputValue = '';
+      currentMode = 'finalResult'
     }
   }
 });
