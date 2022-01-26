@@ -19,12 +19,14 @@ for (const button of digitButtons) {
 
 for (const button of operatorButtons) {
   button.addEventListener('click', e => {
-    if (!a) { // the case only for the very first value inputted
-      a = inputValue;
-    } else if (inputValue) {
-      b = inputValue;
-      a = operate(operator, +a, +b);
-      updateDisplay(a);
+    if (inputValue) {
+      if (!a) {
+        a = inputValue;
+      } else {
+        b = inputValue;
+        a = operate(operator, +a, +b);
+        updateDisplay(a);
+      }
     }
     operator = e.target.id;
     inputValue = '';
