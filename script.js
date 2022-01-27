@@ -77,8 +77,13 @@ plusminusButton.addEventListener('click', () => {
     a = invertSign(a);
     updateDisplay(a);
   } else {
-    inputValue = invertSign(inputValue);
-    updateDisplay(inputValue);
+    if (+inputValue) {
+      inputValue = invertSign(inputValue);
+      updateDisplay(inputValue);
+    } else { // case for inputValue = '', '0'
+      // show +0 or -0 on display
+      
+    }
   }
 });
 
@@ -116,6 +121,9 @@ function invertSign(num) {
       break;
     case -1:
       return num = String(num).slice(1);
+      break;
+    case 0: // case for num = 0, '0', ''
+
       break;
     default:
       return num;
