@@ -39,6 +39,7 @@ for (const button of operatorButtons) {
         updateDisplay(a);
       }
     }
+    b = null;
     operator = e.target.id;
     inputValue = '';
     currentMode = 'calculation';
