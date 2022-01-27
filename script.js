@@ -82,7 +82,7 @@ plusminusButton.addEventListener('click', () => {
   if (currentMode === 'finalResult') { // only when the equal button was last run
     a = invertSign(a);
     updateDisplay(a);
-  } else {
+  } else if (inputValue) {
     inputValue = invertSign(inputValue);
     updateDisplay(inputValue);
   }
