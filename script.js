@@ -71,7 +71,11 @@ decimalButton.addEventListener('click', () => {
 
 backspaceButton.addEventListener('click', () => {
   inputValue = inputValue.slice(0, -1);
-  updateDisplay(inputValue);
+  if (inputValue) {
+    updateDisplay(inputValue);
+  } else {
+    updateDisplay('0');
+  }
 });
 
 plusminusButton.addEventListener('click', () => {
@@ -88,7 +92,7 @@ clearButton.addEventListener('click', () => {
   a = null;
   b = null;
   inputValue = '';
-  display.textContent = '';
+  updateDisplay('0');
 });
 
 function updateDisplay(num) { // can accept either number or string arguments
