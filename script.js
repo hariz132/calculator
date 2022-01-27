@@ -16,13 +16,15 @@ let maxDisplayChar = 10;
 
 for (const button of numberButtons) {
   button.addEventListener('click', e => {
-    inputValue += e.target.textContent;
-    updateDisplay(+inputValue);
-    if (currentMode === 'finalResult') { // only when the equal button was last run
-      a = null;
-      b = null;
+    if (numLength(inputValue) < maxDisplayChar) {
+      inputValue += e.target.textContent;
+      updateDisplay(inputValue);
+      if (currentMode === 'finalResult') { // only when the equal button was last run
+        a = null;
+        b = null;
+      }
+      currentMode = 'calculation';
     }
-    currentMode = 'calculation';
   });
 }
 
@@ -61,7 +63,7 @@ equalButton.addEventListener('click', () => {
 });
 
 decimalButton.addEventListener('click', () => {
-  if (!String(inputValue).includes('.')) {
+  if (!String(inputValue).includes('.') && numLength(inputValue) < maxDisplayChar) {
     inputValue += '.';
     updateDisplay(inputValue);
   }
