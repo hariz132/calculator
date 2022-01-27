@@ -6,6 +6,7 @@ const equalButton = document.querySelector('#equal');
 const clearButton = document.querySelector('#clear');
 const decimalButton = document.querySelector('#decimal');
 const backspaceButton = document.querySelector('#backspace');
+const plusminusButton = document.querySelector('#plusminus');
 let a = null; // a is the result of the previous operation
 let b = null;
 let operator;
@@ -71,6 +72,16 @@ backspaceButton.addEventListener('click', () => {
   updateDisplay(inputValue);
 });
 
+plusminusButton.addEventListener('click', () => {
+  if (currentMode === 'finalResult') { // only when the equal button was last run
+    a = invertSign(a);
+    updateDisplay(a);
+  } else {
+    inputValue = invertSign(inputValue);
+    updateDisplay(inputValue);
+  }
+});
+
 clearButton.addEventListener('click', () => {
   a = null;
   b = null;
@@ -95,6 +106,19 @@ function updateDisplay(num) { // can accept either number or string arguments
     }
   } else {
     display.textContent = num;
+  }
+}
+
+function invertSign(num) {
+  switch (Math.sign(num)) {
+    case 1:
+      return num = '-' + num;
+      break;
+    case -1:
+      return num = String(num).slice(1);
+      break;
+    default:
+      return num;
   }
 }
 
