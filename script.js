@@ -16,14 +16,19 @@ let maxDisplayChar = 10;
 
 for (const button of numberButtons) {
   button.addEventListener('click', e => {
-    if (numLength(inputValue) < maxDisplayChar) {
-      inputValue += e.target.textContent;
-      updateDisplay(inputValue);
-      if (currentMode === 'finalResult') { // only when the equal button was last run
-        a = null;
-        b = null;
+    if (e.target.textContent !== '0' || inputValue !== '0' || inputValue.includes('.')) {
+      if (numLength(inputValue) < maxDisplayChar) {
+        if (inputValue === '0') {
+          inputValue = '';
+        }
+        inputValue += e.target.textContent;
+        updateDisplay(inputValue);
+        if (currentMode === 'finalResult') { // only when the equal button was last run
+          a = null;
+          b = null;
+        }
+        currentMode = 'calculation';
       }
-      currentMode = 'calculation';
     }
   });
 }
