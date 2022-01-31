@@ -1,4 +1,5 @@
-const display = document.querySelector('.display')
+const expressionDisplay = document.querySelector('.expression-display');
+const mainDisplay = document.querySelector('.main-display');
 const buttons = document.querySelectorAll('.buttons button');
 const numberButtons = document.querySelectorAll('.buttons .digit');
 const operatorButtons = document.querySelectorAll('.buttons .operator');
@@ -107,17 +108,17 @@ function updateDisplay(num) { // can accept either number or string arguments
       // round the significand so the resulting exponential form is maxDisplayChar length (excluding the decimal point)
       const array = String(num).split('e');
       array[0] = roundoff(+array[0], maxDisplayChar - array[1].length - 2);
-      display.textContent = array.join('e');
+      mainDisplay.textContent = array.join('e');
     } else {
       // check if decimal point is within maxDisplayChar limit
       if (String(num).includes('.') && String(num).indexOf('.') <= maxDisplayChar) {
-        display.textContent = roundoff(num, maxDisplayChar - String(num).indexOf('.'));
+        mainDisplay.textContent = roundoff(num, maxDisplayChar - String(num).indexOf('.'));
       } else {
         updateDisplay(Number(num).toExponential());
       }
     }
   } else {
-    display.textContent = num;
+    mainDisplay.textContent = num;
   }
 }
 

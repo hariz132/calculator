@@ -14,17 +14,27 @@ body {
 }
 
 .display {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  box-sizing: border-box;
-  height: 120px;
   margin: 50px;
   padding: 16px;
   border: 1px solid black;
   border-radius: 10px;
   background-color: lightskyblue;
+}
+
+.expression-display {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 30px;
+  height: 40px;
+}
+
+.main-display {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   font-size: 50px;
+  height: 70px;
 }
 
 .row {
