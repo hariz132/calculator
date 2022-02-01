@@ -22,12 +22,12 @@ for (const button of numberButtons) {
         if (inputValue === '0') {
           inputValue = '';
         }
-        inputValue += e.target.textContent;
-        updateDisplay(inputValue);
         if (currentMode === 'finalResult') { // only when the equal button was last run
           a = null;
           b = null;
         }
+        inputValue += e.target.textContent;
+        updateDisplay(inputValue);
         currentMode = 'calculation';
       }
     }
@@ -48,6 +48,7 @@ for (const button of operatorButtons) {
     b = null;
     operator = e.target.id;
     inputValue = '';
+    updateExpressionDisplay('operator');
     currentMode = 'calculation';
   });
 }
@@ -56,11 +57,13 @@ equalButton.addEventListener('click', () => {
   if (a !== null) {
     if (inputValue) {
       b = +inputValue;
+      updateExpressionDisplay('equal');
       a = operate(operator, a, b);
       updateDisplay(a);
       inputValue = '';
       currentMode = 'finalResult'
     } else if (b !== null) {
+      updateExpressionDisplay('equal');
       a = operate(operator, a, b);
       updateDisplay(a);
       inputValue = '';
@@ -89,6 +92,7 @@ plusminusButton.addEventListener('click', () => {
   if (currentMode === 'finalResult') { // only when the equal button was last run
     a = invertSign(a);
     updateDisplay(a);
+    updateExpressionDisplay('clear');
   } else if (inputValue) {
     inputValue = invertSign(inputValue);
     updateDisplay(inputValue);
@@ -100,25 +104,60 @@ clearButton.addEventListener('click', () => {
   b = null;
   inputValue = '';
   updateDisplay('0');
+  updateExpressionDisplay('clear');
 });
 
 function updateDisplay(num) { // can accept either number or string arguments
+  mainDisplay.textContent = limitNumLength(num, maxDisplayChar);
+}
+
+function updateExpressionDisplay(type) {
+  switch (type) {
+    case 'operator':
+      expressionDisplay.textContent = `${limitNumLength(a, maxDisplayChar)} ${operatorSymbol()}`;
+      break;
+      case 'equal':
+      expressionDisplay.textContent = `${limitNumLength(a, maxDisplayChar)} ${operatorSymbol()} ${limitNumLength(b, maxDisplayChar)} = `;
+      break;
+      case 'clear':
+      expressionDisplay.textContent = '';
+  }
+}
+
+ // limit length of num to maxDisplayChar by rounding-off. If num is in exponential form, it will round its significand
+function limitNumLength(num, maxDisplayChar) {
   if (numLength(num) > maxDisplayChar) {
     if (isExpForm(num)) {
-      // round the significand so the resulting exponential form is maxDisplayChar length (excluding the decimal point)
+      // round the significand so the resulting exponential form is maxDisplayChar length (excluding the decimal point):
       const array = String(num).split('e');
       array[0] = roundoff(+array[0], maxDisplayChar - array[1].length - 2);
-      mainDisplay.textContent = array.join('e');
+      return array.join('e');
     } else {
-      // check if decimal point is within maxDisplayChar limit
+      // check if decimal point is within maxDisplayChar limit:
       if (String(num).includes('.') && String(num).indexOf('.') <= maxDisplayChar) {
-        mainDisplay.textContent = roundoff(num, maxDisplayChar - String(num).indexOf('.'));
+        return roundoff(num, maxDisplayChar - String(num).indexOf('.'));
       } else {
-        updateDisplay(Number(num).toExponential());
+        return limitNumLength(Number(num).toExponential(), maxDisplayChar);
       }
     }
   } else {
-    mainDisplay.textContent = num;
+    return num;
+  }
+}
+
+function operatorSymbol() {
+  switch (operator) {
+    case 'add':
+      return '+';
+      break;
+    case 'subtract':
+      return '−';
+      break;
+    case 'multiply':
+      return '×';
+      break;
+    case 'divide':
+      return '÷';
   }
 }
 
