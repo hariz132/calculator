@@ -74,6 +74,9 @@ equalButton.addEventListener('click', () => {
 
 decimalButton.addEventListener('click', () => {
   if (!String(inputValue).includes('.') && numLength(inputValue) < maxNumLength) {
+    if(!inputValue) {
+      inputValue = '0'
+    }
     inputValue += '.';
     updateMainDisplay(inputValue);
   }
