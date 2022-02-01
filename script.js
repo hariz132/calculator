@@ -8,17 +8,17 @@ const clearButton = document.querySelector('#clear');
 const decimalButton = document.querySelector('#decimal');
 const backspaceButton = document.querySelector('#backspace');
 const plusminusButton = document.querySelector('#plusminus');
-let a = null; // a is the result of the previous operation
+let a = null; // the result of the previous operation will be stored in 'a'
 let b = null;
 let operator;
 let inputValue = '';
 let currentMode;
-let maxDisplayChar = 10;
+let maxNumLength = 10;
 
 for (const button of numberButtons) {
   button.addEventListener('click', e => {
     if (e.target.textContent !== '0' || inputValue !== '0' || inputValue.includes('.')) {
-      if (numLength(inputValue) < maxDisplayChar) {
+      if (numLength(inputValue) < maxNumLength) {
         if (inputValue === '0') {
           inputValue = '';
         }
@@ -27,7 +27,7 @@ for (const button of numberButtons) {
           b = null;
         }
         inputValue += e.target.textContent;
-        updateDisplay(inputValue);
+        updateMainDisplay(inputValue);
         currentMode = 'calculation';
       }
     }
@@ -42,7 +42,7 @@ for (const button of operatorButtons) {
       } else {
         b = +inputValue;
         a = operate(operator, a, b);
-        updateDisplay(a);
+        updateMainDisplay(a);
       }
     }
     b = null;
@@ -59,13 +59,13 @@ equalButton.addEventListener('click', () => {
       b = +inputValue;
       updateExpressionDisplay('equal');
       a = operate(operator, a, b);
-      updateDisplay(a);
+      updateMainDisplay(a);
       inputValue = '';
       currentMode = 'finalResult'
     } else if (b !== null) {
       updateExpressionDisplay('equal');
       a = operate(operator, a, b);
-      updateDisplay(a);
+      updateMainDisplay(a);
       inputValue = '';
       currentMode = 'finalResult'
     }
@@ -73,29 +73,29 @@ equalButton.addEventListener('click', () => {
 });
 
 decimalButton.addEventListener('click', () => {
-  if (!String(inputValue).includes('.') && numLength(inputValue) < maxDisplayChar) {
+  if (!String(inputValue).includes('.') && numLength(inputValue) < maxNumLength) {
     inputValue += '.';
-    updateDisplay(inputValue);
+    updateMainDisplay(inputValue);
   }
 });
 
 backspaceButton.addEventListener('click', () => {
   inputValue = inputValue.slice(0, -1);
   if (inputValue) {
-    updateDisplay(inputValue);
+    updateMainDisplay(inputValue);
   } else {
-    updateDisplay('0');
+    updateMainDisplay('0');
   }
 });
 
 plusminusButton.addEventListener('click', () => {
   if (currentMode === 'finalResult') { // only when the equal button was last run
     a = invertSign(a);
-    updateDisplay(a);
+    updateMainDisplay(a);
     updateExpressionDisplay('clear');
   } else if (inputValue) {
     inputValue = invertSign(inputValue);
-    updateDisplay(inputValue);
+    updateMainDisplay(inputValue);
   }
 });
 
@@ -103,41 +103,42 @@ clearButton.addEventListener('click', () => {
   a = null;
   b = null;
   inputValue = '';
-  updateDisplay('0');
+  updateMainDisplay('0');
   updateExpressionDisplay('clear');
 });
 
-function updateDisplay(num) { // can accept either number or string arguments
-  mainDisplay.textContent = limitNumLength(num, maxDisplayChar);
+function updateMainDisplay(num) {
+  mainDisplay.textContent = limitNumLength(num, maxNumLength);
 }
 
 function updateExpressionDisplay(type) {
   switch (type) {
     case 'operator':
-      expressionDisplay.textContent = `${limitNumLength(a, maxDisplayChar)} ${operatorSymbol()}`;
+      expressionDisplay.textContent = `${limitNumLength(a, maxNumLength)} ${operatorSymbol()}`;
       break;
       case 'equal':
-      expressionDisplay.textContent = `${limitNumLength(a, maxDisplayChar)} ${operatorSymbol()} ${limitNumLength(b, maxDisplayChar)} = `;
+      expressionDisplay.textContent = `${limitNumLength(a, maxNumLength)} ${operatorSymbol()} ${limitNumLength(b, maxNumLength)} = `;
       break;
       case 'clear':
       expressionDisplay.textContent = '';
   }
 }
 
- // limit length of num to maxDisplayChar by rounding-off. If num is in exponential form, it will round its significand
-function limitNumLength(num, maxDisplayChar) {
-  if (numLength(num) > maxDisplayChar) {
+ // limit length of num to maxNumLength by rounding-off. If num is in exponential form, it will round its significand
+ // num can either be a number or a string
+function limitNumLength(num, maxNumLength) {
+  if (numLength(num) > maxNumLength) {
     if (isExpForm(num)) {
-      // round the significand so the resulting exponential form is maxDisplayChar length (excluding the decimal point):
+      // round the significand so the resulting exponential form is maxNumLength length (excluding the decimal point):
       const array = String(num).split('e');
-      array[0] = roundoff(+array[0], maxDisplayChar - array[1].length - 2);
+      array[0] = roundoff(+array[0], maxNumLength - array[1].length - 2);
       return array.join('e');
     } else {
-      // check if decimal point is within maxDisplayChar limit:
-      if (String(num).includes('.') && String(num).indexOf('.') <= maxDisplayChar) {
-        return roundoff(num, maxDisplayChar - String(num).indexOf('.'));
+      // check if decimal point is within maxNumLength limit:
+      if (String(num).includes('.') && String(num).indexOf('.') <= maxNumLength) {
+        return roundoff(num, maxNumLength - String(num).indexOf('.'));
       } else {
-        return limitNumLength(Number(num).toExponential(), maxDisplayChar);
+        return limitNumLength(Number(num).toExponential(), maxNumLength);
       }
     }
   } else {
@@ -175,9 +176,9 @@ function invertSign(num) {
 }
 
 // rounds num to the specified decimal places
+// only works for num when represented by JS in decimal form, and not in exponential form
 function roundoff(num, decimalPlaces) {
   return +(Math.round(num + `e+${decimalPlaces}`) + `e-${decimalPlaces}`);
-  // only works for num when represented by JS in decimal form, and not in exponential form
 }
 
 // length of a number (excluding the decimal point). If num is in exp form, it also counts the exp parts
