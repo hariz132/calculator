@@ -45,6 +45,9 @@ for (const button of operatorButtons) {
         updateMainDisplay(a);
       }
     }
+    else if(a === null) {
+      a = 0;
+    }
     b = null;
     operator = e.target.id;
     inputValue = '';
