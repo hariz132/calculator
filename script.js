@@ -15,6 +15,13 @@ let inputValue = '';
 let currentMode;
 let maxNumLength = 10;
 
+window.addEventListener('keydown', e => {
+  const key = document.querySelector(`button[data-key~='${e.key}']`);
+  if (key) {
+    key.click();
+  }
+});
+
 for (const button of numberButtons) {
   button.addEventListener('click', e => {
     if (e.target.textContent !== '0' || inputValue !== '0' || inputValue.includes('.')) {
