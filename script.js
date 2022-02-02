@@ -19,6 +19,8 @@ window.addEventListener('keydown', e => {
   const key = document.querySelector(`button[data-key~='${e.key}']`);
   if (key) {
     key.click();
+    key.classList.add('active');
+    setTimeout(() => key.classList.remove('active'), 50);
   }
 });
 

@@ -4,13 +4,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: lightsteelblue;
 }
 
 .container {
   width: 500px;
-  border: 1px solid black;
+  border: 5px solid black;
   border-radius: 50px;
-  background-color: lightgrey;
+  background-color: #0e4177;
 }
 
 .display {
@@ -18,7 +19,7 @@ body {
   padding: 16px;
   border: 1px solid black;
   border-radius: 10px;
-  background-color: lightskyblue;
+  background-color: rgb(166, 213, 243);
 }
 
 .expression-display {
@@ -52,6 +53,8 @@ body {
   font-size: 32px;
   padding: 0;
   flex: 1 1 0px;
+  background-color: #245ea0;
+  color: #d5f3fe;
 }
 
 #zero {
@@ -62,5 +65,27 @@ body {
 }
 
 .buttons {
-  margin: 50px;
+  margin: 0 50px;
+}
+
+#clear,
+#backspace,
+#plusminus {
+  background-color: #364750;
+  color: rgb(236, 130, 0);
+}
+
+button.operator,
+#equal {
+  background-color: rgb(236, 130, 0);
+  color: black;
+}
+
+button:hover {
+  filter: brightness(0.8);
+}
+
+button:active,
+button.active {
+  filter: brightness(0.5);
 }
